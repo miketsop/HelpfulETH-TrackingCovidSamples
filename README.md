@@ -1,4 +1,4 @@
-# flutter_barcode_scanner_example
+# HelpfulETH-TrackingCovidSamples
 
 This Android application gives a user access to the specified Firebase Cloudstore Database, containing COVID samples as part of the helpfulETH contribution to supporting its healthcare partners.
 Moreover, it allows the user to scan barcodes found in the bags containing patient samples, and then uploading them to the aforementioned database.

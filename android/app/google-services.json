@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1096842967164",
+    "firebase_url": "https://helpfulethsamplestrackingqr.firebaseio.com",
+    "project_id": "helpfulethsamplestrackingqr",
+    "storage_bucket": "helpfulethsamplestrackingqr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096842967164:android:cb9653a10dd491448df1f9",
+        "android_client_info": {
+          "package_name": "com.helpfuleth.TrackingSamples"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096842967164-2lv9pjfjsng0mpribe01ephc49j9fkbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAheHcvJCGPH1ayUhx_iOuL2AXcGb8SdVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096842967164-2lv9pjfjsng0mpribe01ephc49j9fkbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart' as syspaths;
+import '../../providers/labs.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(String email, String password, BuildContext ctx) submitFn;
@@ -19,7 +20,7 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userPassword = '';
 
-  List<String> listOfLabs = ['Lab1', 'Lab2', 'Lab3'];
+  // List<String> listOfLabs = ['Lab1', 'Lab2', 'Lab3'];
   var _labName = '';
 
   void _trySubmit() async {
@@ -90,33 +91,38 @@ class _AuthFormState extends State<AuthForm> {
                     },
                   ),
                   SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Flex(
+                    direction: Axis.horizontal,
                     children: <Widget>[
-                      Card(child: Text('Please select your location'),),
-                      DropdownButton<String>(
-                        value: _labName.isEmpty ? null : _labName,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        underline: Container(
-                          height: 2,
-                          color: Theme.of(context).accentColor,
+                      Card(
+                        child: Text(
+                          'Please select your location',
+                          textAlign: TextAlign.left,
                         ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            _labName = newValue;
-                          });
-                        },
-                        items: listOfLabs
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      )
+                      ),
                     ],
+                  ),
+                  DropdownButton<String>(
+                    value: _labName.isEmpty ? null : _labName,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _labName = newValue;
+                      });
+                    },
+                    items: listOfLabs
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                   if (widget.isLoading) CircularProgressIndicator(),
                   if (!widget.isLoading)

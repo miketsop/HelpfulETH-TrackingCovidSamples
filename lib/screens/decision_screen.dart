@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import './auth_screen.dart';
-import './scan_screen.dart';
+import './main_screen.dart';
 
 class DecisionScreen extends StatelessWidget {
   static const routeName = '/decision-screen';
@@ -17,7 +17,7 @@ class DecisionScreen extends StatelessWidget {
           if (user == null) {
             return AuthScreen();
           }
-          return ScanScreen();
+          return MainScreen();
         } else {
           return Scaffold(
             body: Center(

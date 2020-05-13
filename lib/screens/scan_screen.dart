@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
-
-import '../widgets/main_drawer.dart';
 
 class ScanScreen extends StatefulWidget {
   static const routeName = '/scan-screen';
-  String _labName = 'Unknown';
 
   @override
   _ScanScreenState createState() => _ScanScreenState();
@@ -19,7 +15,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   String _scanBarcode = 'Unknown';
   var _isUploading = false;
-  int _selectedIndex = 0;
+  String _labname = 'Unknown';
 
   Future<void> scanQR() async {
     String barcodeScanRes;
@@ -69,10 +65,10 @@ class _ScanScreenState extends State<ScanScreen> {
     });
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     final filehandler = File('${appDir.path}/Lab.txt');
-    widget._labName = await filehandler.readAsString();
+    _labname = await filehandler.readAsString();
     await Firestore.instance.collection('samples').add({
       'barcodeText': _scanBarcode,
-      'labName': widget._labName,
+      'labName': _labname,
       'timestamp': DateTime.now().toIso8601String(),
     });
     setState(() {
@@ -82,60 +78,35 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tracking COVID samples'),
-        // leading: Icon(Icons.scanner),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.exit_to_app,
+    return Container(
+      alignment: Alignment.center,
+      child: Flex(
+        direction: Axis.vertical,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (_isUploading) Center(child: CircularProgressIndicator()),
+          if (!_isUploading)
+            RaisedButton(
+              onPressed: () => scanBarcodeNormal(),
+              child: Text("Start barcode scan"),
             ),
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            tooltip: 'Logout',
+          SizedBox(
+            height: 20,
           ),
-        ],
-      ),
-      drawer: MainDrawer(),
-      body: Container(
-        alignment: Alignment.center,
-        child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (_isUploading) Center(child: CircularProgressIndicator()),
-            if (!_isUploading)
-              RaisedButton(
-                onPressed: () => scanBarcodeNormal(),
-                child: Text("Start barcode scan"),
-              ),
-            // RaisedButton(
-            //   onPressed: () => scanQR(),
-            //   child: Text("Start QR scan"),
-            // ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Scan result : $_scanBarcode\n',
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:
-            (_isUploading ||
+          Text(
+            'Scan result : $_scanBarcode\n',
+            style: TextStyle(fontSize: 20),
+          ),
+          IconButton(
+            icon: Icon(Icons.cloud_upload),
+            onPressed: (_isUploading ||
                     _scanBarcode.trim().isEmpty ||
                     _scanBarcode.contains('Unknown') ||
                     _scanBarcode.contains('-1'))
                 ? null
-                :
-            () => _uploadSample(context),
-        child: const Icon(Icons.cloud_upload),
-        tooltip: 'Upload sample',
+                : () => _uploadSample(context),
+          ),
+        ],
       ),
     );
   }

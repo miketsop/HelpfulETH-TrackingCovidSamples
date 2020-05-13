@@ -55,24 +55,30 @@ class MainDrawer extends StatelessWidget {
         children: <Widget>[
           AppBar(
             title: Text('Menu'),
-            // automaticallyImplyLeading: true,
+            automaticallyImplyLeading: false,
           ),
           Divider(),
-          buildListTile('Samples', Icons.list, () {
-            Navigator.of(context).pushNamed(SamplesScreen.routeName);
-            // Navigator.pop(context);
-          }),
+          buildListTile(
+            'Samples',
+            Icons.list,
+            () {
+              Navigator.of(context).pushNamed(SamplesScreen.routeName);
+            },
+          ),
           Divider(),
           buildListTile('Change location', Icons.edit_location, () {
             buildModalSheet(context);
-            // Navigator.pop(context);
           }),
           SizedBox(
             height: 20,
           ),
-          buildListTile('Log out', Icons.exit_to_app, () {
-            FirebaseAuth.instance.signOut();
-          }),
+          buildListTile(
+            'Log out',
+            Icons.exit_to_app,
+            () {
+              FirebaseAuth.instance.signOut();
+            },
+          ),
         ],
       ),
     );

@@ -19,6 +19,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   String _scanBarcode = 'Unknown';
   var _isUploading = false;
+  int _selectedIndex = 0;
 
   Future<void> scanQR() async {
     String barcodeScanRes;
@@ -79,61 +80,69 @@ class _ScanScreenState extends State<ScanScreen> {
     });
   }
 
+  void _onItemTapped(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Tracking COVID samples'),
-          // leading: Icon(Icons.scanner),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.exit_to_app,
+      appBar: AppBar(
+        title: const Text('Tracking COVID samples'),
+        // leading: Icon(Icons.scanner),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            tooltip: 'Logout',
+          ),
+        ],
+      ),
+      drawer: MainDrawer(),
+      body: Container(
+        alignment: Alignment.center,
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (_isUploading) Center(child: CircularProgressIndicator()),
+            if (!_isUploading)
+              RaisedButton(
+                onPressed: () => scanBarcodeNormal(),
+                child: Text("Start barcode scan"),
               ),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              tooltip: 'Logout',
+            // RaisedButton(
+            //   onPressed: () => scanQR(),
+            //   child: Text("Start QR scan"),
+            // ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Scan result : $_scanBarcode\n',
+              style: TextStyle(fontSize: 20),
             ),
           ],
         ),
-        drawer: MainDrawer(),
-        body: Container(
-          alignment: Alignment.center,
-          child: Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              if (_isUploading) Center(child: CircularProgressIndicator()),
-              if (!_isUploading)
-                RaisedButton(
-                  onPressed: () => scanBarcodeNormal(),
-                  child: Text("Start barcode scan"),
-                ),
-              // RaisedButton(
-              //   onPressed: () => scanQR(),
-              //   child: Text("Start QR scan"),
-              // ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Scan result : $_scanBarcode\n',
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (_isUploading ||
-                  _scanBarcode.trim().isEmpty ||
-                  _scanBarcode.contains('Unknown') ||
-                  _scanBarcode.contains('-1'))
-              ? null
-              : () => _uploadSample(context),
-          child: const Icon(Icons.cloud_upload),
-          tooltip: 'Upload sample',
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:
+            // (_isUploading ||
+            //         _scanBarcode.trim().isEmpty ||
+            //         _scanBarcode.contains('Unknown') ||
+            //         _scanBarcode.contains('-1'))
+            //     ? null
+            //     :
+            () => _uploadSample(context),
+        child: const Icon(Icons.cloud_upload),
+        tooltip: 'Upload sample',
+      ),
     );
   }
 }

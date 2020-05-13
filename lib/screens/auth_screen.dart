@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../widgets/auth/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
+  static const routeName = '/auth-screen';
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -22,8 +23,6 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = true;
       });
-      print('Email: $email');
-      print('Password: $password');
       authResult = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
     } on PlatformException catch (err) {
@@ -31,10 +30,10 @@ class _AuthScreenState extends State<AuthScreen> {
       if (err.message != null) {
         message = err.message;
       }
-      Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: Theme.of(ctx).errorColor,
-      ));
+      // Scaffold.of(ctx).showSnackBar(SnackBar(
+      //   content: Text(message),
+      //   backgroundColor: Theme.of(ctx).errorColor,
+      // ));
       setState(() {
         _isLoading = false;
       });
@@ -48,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('Builder');
     return Scaffold(
       appBar: AppBar(
         title: const Text('HelpfulETH - Tracking samples'),

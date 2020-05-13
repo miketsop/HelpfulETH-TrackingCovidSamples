@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widgets/sample.dart';
-import './scan_screen.dart';
+import '../widgets/main_drawer.dart';
 
 class SamplesScreen extends StatefulWidget {
   static const routeName = '/samples-screen';
@@ -13,7 +13,7 @@ class SamplesScreen extends StatefulWidget {
 class _SamplesScreenState extends State<SamplesScreen> {
 
   void _onBackPressed(){
-    Navigator.of(context).pushReplacementNamed(ScanScreen.routeName);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -23,6 +23,7 @@ class _SamplesScreenState extends State<SamplesScreen> {
           leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: _onBackPressed),
           title: const Text('List of COVID samples'),
         ),
+        drawer: MainDrawer(),
         body: StreamBuilder(
           stream: Firestore.instance
               .collection('samples')
@@ -35,7 +36,6 @@ class _SamplesScreenState extends State<SamplesScreen> {
               );
             }
             final samples = snapshot.data.documents;
-            print(samples.length);
             if (samples.length == 0){
               return Center(child: const Text('No samples added yet!'));
             }

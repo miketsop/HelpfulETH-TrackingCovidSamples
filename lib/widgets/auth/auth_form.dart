@@ -33,7 +33,6 @@ class _AuthFormState extends State<AuthForm> {
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     final filename = File('${appDir.path}/Lab.txt');
     filename.writeAsString('$_labName');
-    print('Saved Lab name: $_labName');
 
     //  Send values to firebase for authentication...
     widget.submitFn(_userEmail.trim(), _userPassword.trim(), context);

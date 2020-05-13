@@ -80,12 +80,6 @@ class _ScanScreenState extends State<ScanScreen> {
     });
   }
 
-  void _onItemTapped(int index){
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,12 +127,12 @@ class _ScanScreenState extends State<ScanScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed:
-            // (_isUploading ||
-            //         _scanBarcode.trim().isEmpty ||
-            //         _scanBarcode.contains('Unknown') ||
-            //         _scanBarcode.contains('-1'))
-            //     ? null
-            //     :
+            (_isUploading ||
+                    _scanBarcode.trim().isEmpty ||
+                    _scanBarcode.contains('Unknown') ||
+                    _scanBarcode.contains('-1'))
+                ? null
+                :
             () => _uploadSample(context),
         child: const Icon(Icons.cloud_upload),
         tooltip: 'Upload sample',

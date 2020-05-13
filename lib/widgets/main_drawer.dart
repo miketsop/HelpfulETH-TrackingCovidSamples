@@ -62,11 +62,13 @@ class MainDrawer extends StatelessWidget {
             'Samples',
             Icons.list,
             () {
+              Navigator.of(context).pop();
               Navigator.of(context).pushNamed(SamplesScreen.routeName);
             },
           ),
           Divider(),
           buildListTile('Change location', Icons.edit_location, () {
+            Navigator.of(context).pop();
             buildModalSheet(context);
           }),
           SizedBox(
